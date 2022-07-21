@@ -15,10 +15,10 @@ module.exports = new class UserService {
         }
     }
 
-    async listAll(params) {
+    async listAll() {
         let usersReturn = [];
 
-        const usersTotal = await UserModel.find();
+        const users = await UserModel.find();
         
         if (users) {
             users.map((user) => {
@@ -31,7 +31,7 @@ module.exports = new class UserService {
         }
 
         const usersList = {
-            total: usersTotal.length,
+            total: users.length,
             users: usersReturn
         };
 
@@ -50,5 +50,22 @@ module.exports = new class UserService {
         }
 
         return userReturn;
+    }
+
+    async createUserTest() {
+        const user = new UserModel({
+            name: 'Test',
+            email: 'test@hyperting.com',
+            password: 'test'
+        });
+        const passwordHash = await hash(user.password, 8);
+        user.password = passwordHash;
+
+        try {
+            await user.save();
+            return user;    
+        } catch (error) {
+            return error;
+        }
     }
 }

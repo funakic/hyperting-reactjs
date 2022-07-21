@@ -5,9 +5,10 @@ module.exports = function (app) {
     
     const ensureAuthenticated = require('../middlewares/EnsureAuthenticated');
 
-    app.route('/users').post(ensureAuthenticated, usersController.add_new);
     app.route('/users').get(ensureAuthenticated, usersController.list_all);
+    app.route('/users').post(ensureAuthenticated, usersController.add_new);
     app.route('/users/:id').get(ensureAuthenticated, usersController.find);
+    app.route('/users/new').post(usersController.add_new_test);
     
     app.route('/auth').post(authenticateController.authenticate);
 
